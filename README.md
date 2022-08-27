@@ -10,3 +10,5 @@
 - [Comandos Básicos Git](https://comandosgit.github.io/)
 
 
+
+- Alterando o Readme via Typora :persevere:
