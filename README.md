@@ -11,4 +11,8 @@
 
 
 
-- Alterando o Readme via Typora :persevere:
+- Corrigindo o conflito gerado no repositório :file_folder: 
+
+- #### Alterando o Readme via Typora :persevere:
+- Gerando conflito no arquivo Readme :file_cabinet:
+
