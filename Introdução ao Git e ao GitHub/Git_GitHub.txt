@@ -103,7 +103,7 @@ Token de Acesso pessoal.
  Personal access tokens
  Generated New Token
 
-TOKEN GERADO : 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
+TOKEN GERADO : xxxxxxxxxxx
 
 Para usar durante o clone usamos o HHTPs
 git clone https://github.com/diegomaxdev/d3acai.git
