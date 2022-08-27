@@ -10,3 +10,5 @@
 - [Comandos Básicos Git](https://comandosgit.github.io/)
 
 
+- Gerando conflito no arquivo Readme
+
