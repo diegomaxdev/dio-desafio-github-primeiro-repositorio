@@ -1,0 +1,208 @@
+-- COMANDOS DO CMD WINDOWS
+cd - abrir a pasta ou caminho - Navegar entre as pastas
+cd / - leva para a raiz EX : C:\
+cd .. - volta uma pasta
+cls - clear scream
+tab - Auto Complete
+dir - listar pastas e arquivos - ls - ctrl + L
+mkdir - criar pastas e arquivos
+del - deleta o que tem dentro
+rmdir - deleta a pasta 
+Echo "Texto" > arquivo.txt - Cria e salva o que será exibido no Echo dentro do arquivo
+Setas para cima e para baixo, mostra os comandos que foram executados.
+rmdir /S /Q - deleta a pasta 
+pwd - Exibir o caminho completo
+MV arquivo ./pasta
+
+
+-- COMO FUNCIONA GIT
+SHA1 - Algoritimo que criptografa os seus arquivos gerando um conjunto de caractere de 40 digitos como chave para identificar os arquivos, ou seja representa o estdo do arquivo, caso mude a chave altera.
+COMANDO : openssl sha1 texto.txt 
+- Gera um hash de um arquivo ou conjunto de caracteres. Forma de garantir que os arquivos sofrema modificações.
+
+
+
+Objetos Fundamentais do GIT : BLOBS / TREES / COMMITS
+
+BLOB -> REFLETE NA TREE -> REFLETE NO COMMIT
+
+o Git pega o conteúdo do tipo BLOB coloca uma \0 e o texto que está dentro do arquivo. Com isso não vai bater com o comando acima.
+echo -e 'blob 9\0conteudo' | openssl sha1
+conteudo - Texto que está dentro do arquivo.
+BLOB - Bloco Básico de composição 
+
+
+TREE  - Armazena Blobs de forma estrutural - Quanda o nome dos arquivos 
+Responsável pela estrutura para remontar os arquivos. Ou seja nomes e caminhos.
+Pode chamar uma BLOB ou outras árvoes.
+Tree \0 blob - ela tem o Sha1 da arvole e guarda os sha1 dos Blobs.
+Uma coisa se relaciona com a outra, qq mudança, afeta a estrutura de árvoes.
+Encapsula o comporatemento dos diretórios.
+
+
+COMMIT - Une tudo
+Aponta para uma árvore - estrutura de arquivos (BLOBS)
+Aponta para um parentre - Ultimo COMMIT
+Aponta para um autor - quem realizou aquela alteração
+Aponta para uma mensagem - o que os objetos querem dizer
+Aponta para um tempo - Quando foi criado
+
+Também é gerado um Sha1 de um commit
+
+Com isso montamos uma linha do tempo, pois sabemos o histórico do que foi feito.
+
+
+Sistema distribuido seguro
+Seu repositótio está em um servidor, que representa o estado final do seu software.
+Permite que diversas pessoas consigam contribuir no seu código e gerar outras versões 
+Onde todas as pessoas que consomem, tem uma cópia segura desta versões.
+A estrutura foi projetada para dar segurança e permitir esta distribuição.
+
+
+Chave SSH e Token
+Com as atualizações do GITHUB passou a usar a forma de authenticação SSH para garantir mais segurança aos seus usuários.
+Para gerar a senha temos que executar alguns comandos através do GIT BASH
+COMANDO : ssh-keygen -t ed25519 -C diego.maxdev@gmail.com
+
+Por padrão ele salva na pasta .ssh
+cd /c/Users/Radyjia/.ssh/
+
+Executar o comando 
+COMANDO : cat id_ed25519.pub
+
+Com isso ele vai exibir nossa chave pública.
+copiamos e configuramos no site do github
+Profile - Settings - Chaves SSH e GPG - New SSH key (Botão Verde)
+Definir um nome e inserir os dados copiados.
+
+Após isso, temos que inicializar o SSH agent
+eval $(ssh-agent -s)
+
+
+Configurando nossa chave ao agente - o SSH agent
+$ ssh-add id_ed25519
+Enter passphrase for id_ed25519:
+Identity added: id_ed25519 (diego.maxdev@gmail.com)
+
+Adicionar o endereço do git hub
+ssh-keyscan github.com >>  ~/known_hosts
+
+Após isso basta fazermos o clone
+git clone git@github.com:diegomaxdev/exercicioGit.git
+
+Na primeira execução ele perguntará
+The authenticity of host 'github.com (20.201.28.151)' can't be established.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+
+Colocamos Yes.
+Após isso ele baixará o projeto.
+
+
+Token de Acesso pessoal.
+ Developer settings
+ Personal access tokens
+ Generated New Token
+
+TOKEN GERADO : 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
+
+Para usar durante o clone usamos o HHTPs
+git clone https://github.com/diegomaxdev/d3acai.git
+
+Ao dar o comando, ele solicitará o Token via tela.
+
+
+INICIANDO COM GIT
+
+GIT INIT - Inicia um projeto, criando um repositorio
+Usamos para uma pasta onde nunca foi utilizado o git
+ls -a -> mostra arquivos ocultos
+ls .git/ - todos os arquivos usados pelo Git para gerenciar o projeto
+
+--CONFIGURAÇÕES INICIAIS - para atribuir um Autor
+ git config --global user.email "diego.maxdev@gmail.com" - Email do usuario
+ git config --global user.name "Diego Maxdev" - Apelido usado no Git
+
+GIT ADD - Adiciona os arquivos 
+git add *
+
+GIT COMMIT - Adicionar um texto para identificar a alteração realizada
+$ git commit -m "Commit Inicial"
+
+Arquivo criado - untracked - não conhecido pelo git
+git add - move o arquivo para Staged - está aguardando para subir
+Unmodified - não sofreu alteração
+Modified - foi modificado
+Quando modificakmos e usamos o git Add - ele vai para a área do Staged
+
+Vale ressaltar que o git compara o Sha1 para saber se foi alterado.
+Caso removemos o arquivo ele volta para Untracked
+
+do Staged, quando realizamos um Commit ele passa a ser Unmodified.
+Ou seja subi o Git já conhece e gravou aquele como ultimo estado do arquivo.
+Cria um snapshot do código após o commit.
+
+Novo ou movido (Untracked)
+Modificado e conhecido - Modified
+Conhecido e não alterado - Unmodified
+Adicionado seja novo ou Modificado - Staged
+Commitado - Unmodified
+ 
+Git cria uma versão do repositório local e uma no servidor Remoto do GITHUB / BitBucket e etc.
+Os arquivos ficam transitando sempre entre o staging e o repositorio após o commit
+Quando damos um push ele sobe para o repositorio remoto o que foi preparado no commit
+
+Commit ele move os arquivos do Staging para Unmodified e populou o repositorio Local
+Sem o commit não se envia nada para o repositório remoto.
+
+git status - Exibe o status dos arquivos
+
+VERIFICANDO AS CONFIGURAÇÔES DO GIT
+ git config --list
+
+Verificar 
+user.email=diego.maxdev@gmail.com
+user.name=Diego Maxdev
+
+Manter o email e perfil igual ao que foi criado na conta do github ou portal
+Caso precise apagar  usamos :
+$ git config --global --unset user.email
+$ git config --global --unset user.name
+
+CONFIGURANDO NOVAMENTE
+$ git config --global user.email "diego.maxdev@gmail.com"
+$ git config --global user.name "diegomaxdev"
+
+Apontando o repositorio local para um repositorio remoto
+Basta apontarmos a origem que iremos enviar
+git remote add origin https://github.com/diegomaxdev/livro-receitas.git
+
+Listar repositorios remotos que temos cadastrados
+git remote -v
+
+origin - apenas um Alias para indicar o endereço.
+Forma de digitar o endereço remoto de uma maneira simples
+ 
+Enviando os arquivos para on repositório remoto
+git push origin master
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,30 @@
+COMANDO PARA PASSAR VARIAVEIS DURANTE A EXECUÇÂO EM PROD
+java -jar -Dspring.profiles.active=prod -DFORUM_DATABASE_URL=jdbc:h2:mem:alura-forum -DFORUM_DATABASE_USERNAME=sa -DFORUM_DATABASE_PASSWORD= -DFORUM_JWT_SECRET=123456 forum.jar
+
+CRIAR ARQUIVO - Dockerfile - CRIAR NA RAIZ
+
+##FROM openjdk:8-jdk-alpine
+FROM openjdk:17-jdk-alpine
+RUN addgroup -S spring && adduser -S spring -G spring
+USER spring:spring
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]
+
+Após Instalado e com o arquivo na raiz do projeto, temos que gerar uma imagem e subir no Docker, através dos comandos abaixo:
+CRIAR UMA IMAGEM ATRAVÈS DO DIRETORIO RAIZ
+docker build –t alura/forum .
+
+LISTAR AS IMAGENS CRIADAS
+docker image list
+
+EXECUTAR A IMAGEM PASSANDO PARAMETROS
+docker run -p 8080:8080 -e SPRING_PROFILES_ACTIVE=prod -e FORUM_DATABASE_URL=jdbc:h2:mem:alura-forum -e FORUM_DATABASE_USERNAME=sa -e FORUM_DATABASE_PASSWORD= -e FORUM_JWT_SECRET=123456 alura/forum
+
+
+
+
+
+
+
+
